@@ -105,5 +105,6 @@ end
 execute "mysql-install-privileges" do
   command "/usr/bin/mysql -u root #{node[:mysql][:server_root_password].empty? ? '' : '-p' }#{node[:mysql][:server_root_password]} < #{grants_path}"
   action :nothing
-  subscribes :run, resources(:template => "/etc/mysql/grants.sql"), :immediately
+  # subscribes :run, resources(:template => "/etc/mysql/grants.sql"), :immediately
+  not_if do File.exists?("/etc/mysql/grants.sql") end
 end

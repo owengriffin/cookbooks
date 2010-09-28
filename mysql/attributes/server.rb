@@ -19,8 +19,15 @@
 
 ::Chef::Node.send(:include, Opscode::OpenSSL::Password)
 
+if File.exists? "/etc/mysql/grants.sql"
+  Chef::Log.warn("Reading MySQL root password from /etc/mysql/grants.sql")
+  root_password = File.read("/etc/mysql/grants.sql").match(/PASSWORD\('(.*)'\)/)[1]
+else
+  root_password = secure_password
+end
+
 set_unless[:mysql][:server_debian_password] = secure_password
-set_unless[:mysql][:server_root_password] = secure_password
+set_unless[:mysql][:server_root_password] = root_password
 set_unless[:mysql][:server_repl_password] = secure_password
 default[:mysql][:bind_address]         = ipaddress
 default[:mysql][:datadir]              = "/var/lib/mysql"
