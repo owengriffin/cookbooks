@@ -1,0 +1,6 @@
+set[:maven2][:version]="2.2.1"
+set[:maven2][:path]="/usr/share/"
+set[:maven2][:home]="#{maven2[:path]}/apache-maven-#{maven2[:version]}"
+set[:maven2][:download]="#{node[:maven2][:path]}/apache-maven-#{node[:maven2][:version]}-bin.tar.bz2"
+set[:maven2][:mirror]="http://www.mirrorservice.org/sites/ftp.apache.org/maven/binaries/apache-maven-#{node[:maven2][:version]}-bin.tar.bz2"
+set[:maven2][:repository]="#{node[:maven2][:home]}/repository/"
