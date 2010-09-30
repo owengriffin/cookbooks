@@ -21,8 +21,8 @@ ruby_block "env variables" do
         File.open(file, 'a') {|f| f.write("#{var}=#{val}\n") }
       end
     end
-    write_env("/etc/bash.bashrc", "export M2_HOME", node[:maven2][:home])
-    write_env("/etc/bash.bashrc", "export PATH", "$M2_HOME/bin:$PATH")
+    write_env("/etc/profile", "export M2_HOME", node[:maven2][:home])
+    write_env("/etc/profile", "export PATH", "$M2_HOME/bin:$PATH")
   end
 end
 
@@ -30,3 +30,11 @@ template "#{node[:maven2][:home]}/conf/settings.xml" do
   source "settings.xml.erb"
   mode 0755
 end
+
+directory node[:maven2][:repository] do
+  owner "root"
+  group "users"
+  mode "0777"
+  action :create
+end
+
