@@ -18,10 +18,17 @@
 # limitations under the License.
 #
 
-default[:radiant][:branch]          = "HEAD"
-default[:radiant][:migrate]         = false
-default[:radiant][:migrate_command] = "rake db:migrate"
-default[:radiant][:environment]     = "production"
-default[:radiant][:revision]        = "HEAD"
-default[:radiant][:action]          = "nothing"
-default[:radiant][:edge]            = false
+default['radiant']['branch']          = "HEAD"
+default['radiant']['migrate']         = false
+default['radiant']['migrate_command'] = "rake db:migrate"
+default['radiant']['revision']     = "HEAD"
+default['radiant']['action']       = "nothing"
+default['radiant']['edge']         = false
+default['radiant']['environment']  = chef_environment =~ /_default/ ? "production" : chef_environment
+default['radiant']['db_bootstrap'] = <<EOS
+yes | rake #{radiant['environment']} db:bootstrap \
+ADMIN_NAME=Administrator \
+ADMIN_USERNAME=admin \
+ADMIN_PASSWORD=radiant \
+DATABASE_TEMPLATE=empty.yml
+EOS
